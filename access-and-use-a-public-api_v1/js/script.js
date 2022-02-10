@@ -1,28 +1,38 @@
-//global variables
+//Global variables
 let employees = [];
 const urlAPI = `https://randomuser.me/api/?results=12&inc=name,picture,email,location,phone,dob&noinfo&nat=US`;
 const gridContainer = document.querySelector('.grid-container');
 const overlay = document.querySelector('.overlay');
 const modalContainer = document.querySelector('.modal-content');
 const modalClose = document.querySelector('.modal-close');
-const modalPrevious = document.getElementById('previous');
-const modalNext = document.getElementById('next')
 const searchBar = document.querySelector('#search')
 const searchButton = document.querySelector('.header button')
+let modalPrevious = document.getElementById('previous');
+let modalNext = document.getElementById('next')
 
-
-//fetch data from API
+//Fetch data from API
 fetch(urlAPI)
+    .then(checkStatus)
     .then(res => res.json())
     .then(res => employees = res.results)
     .then(displayEmployees)
-    .catch(err => console.log(err))
- 
+    .catch(err => console.log('Looks like there was a problem here!' ,err))
+
+// HELPER FUNCTIONS  
+//Check response function
+function checkStatus(response)  {
+    if(response.ok) {
+        return Promise.resolve(response);
+    } else {
+        return Promise.reject(new Error(response.statusText));
+    }
+}
+
 //This function takes the data and stores it in a variable
 function displayEmployees(employeeData) {
     let employeeHTML = '';
 
-    //loop through each employee and create HTML Markup
+    //Loop through each employee and create HTML Markup
     employeeData.forEach((employee, index) => {
         let name = employee.name;
         let email = employee.email;
@@ -89,8 +99,7 @@ function search() {
     }
 }
 
-//Event listeners
-// modal 
+//Event listeners 
 let currentModal = ''
 gridContainer.addEventListener('click', e => {
     if(e.target !== gridContainer) {
@@ -105,7 +114,7 @@ gridContainer.addEventListener('click', e => {
 
 modalClose.addEventListener('click', e => overlay.classList.add('hidden'));
 
-//modal previous
+//Modal
 modalPrevious.addEventListener('click', e => {
     if (currentModal > 0) {
         currentModal--;
@@ -130,7 +139,7 @@ modalNext.addEventListener('click', e => {
     console.log(currentModal);
 });
 
-// This event handlers improve users experience by filtering the search results either clicking or just typing.
+//This event handlers improve users experience by filtering the search results either clicking or just typing.
 searchBar.addEventListener('keyup', e => {
     searchInput = e.target.value.toLowerCase();
     console.log(searchInput)
