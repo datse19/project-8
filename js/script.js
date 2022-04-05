@@ -37,6 +37,7 @@ function displayEmployees(employeeData) {
         let name = employee.name;
         let email = employee.email;
         let city = employee.location.city;
+        let state = employee.location.state;
         let picture = employee.picture;
 
         employeeHTML += `
@@ -45,7 +46,7 @@ function displayEmployees(employeeData) {
             <div class="text-container">
                 <h2 class="name">${name.first} ${name.last}</h2>
                 <p class="email">${email}</p>
-                <p class="address">${city}</p>
+                <p class="address">${city}, ${state}</p>
             </div>
         </div>
         `
@@ -119,25 +120,23 @@ modalPrevious.addEventListener('click', e => {
     if (currentModal > 0) {
         currentModal--;
         modalPrevious.disable = false;
-    }
-    if (currentModal === 0) {
+    } else if (currentModal === 0) {
         modalPrevious.disable = true;
-    }
-    displayModal(currentModal);
-    console.log(currentModal);
-});
+    } else {
+        displayModal(currentModal);
+        console.log(currentModal);
+}});
 
 modalNext.addEventListener('click', e => {
     if (currentModal <= employees.length) {
         currentModal++;
         modalNext.disable = false;
-    }
-    if (currentModal === employees.length - 1) {
+    } else if (currentModal === employees.length - 1) {
         modalNext.disable = true;
-    }
-    displayModal(currentModal);
-    console.log(currentModal);
-});
+    } else {
+        displayModal(currentModal);
+        console.log(currentModal);
+}});
 
 //This event handlers improve users experience by filtering the search results either clicking or just typing.
 searchBar.addEventListener('keyup', e => {
